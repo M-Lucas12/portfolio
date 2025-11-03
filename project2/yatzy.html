@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="../project1/styles.css" />
 
     <style>
-        /* Small local tweaks only (kept minimal to satisfy “reuse design system”) */
+        /* Base layout */
         main { max-width: 1000px; margin: auto; padding: 40px 20px; }
         h1, h2 { color: #8b4513; border-bottom: 2px solid #8b4513; display: inline-block; padding-bottom: 4px; }
 
@@ -21,7 +21,20 @@
             border: 1px solid #ccc;
         }
 
+        /* Code and diagram sections */
         pre, code { background: #eee; padding: 10px; border-radius: 6px; }
+        .diagram, .codebox {
+            background: #fdfdfd;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px 25px;
+            font-family: "Courier New", monospace;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            color: #333;
+            white-space: pre-wrap;
+            margin-bottom: 18px;
+        }
     </style>
 </head>
 <body>
@@ -30,8 +43,8 @@
     <div class="hero-content">
         <div class="hero-text">
             <h1>Project 2 – Yatzy Technical Documentation</h1>
-            <p>By Lucas Muteta • Algonquin College</p>
-            <p>This page documents my Yatzy game from Assignments #1 and #2.</p>
+            <p>By Lucas Muteta</p>
+            <p>This page documents my Yatzy game from Assignments 1 and 2.</p>
         </div>
     </div>
 </header>
@@ -57,73 +70,66 @@
             My implementation focuses on clear state management, reusable UI components, and accurate scoring logic
             aligned with the assignment requirements.
         </p>
-
-        <!-- Real screenshot of your game -->
         <img class="screenshot" src="assets/yatzy_overview.png" alt="Yatzy overview screenshot" />
-
-
     </section>
 
     <!-- ===== ARCHITECTURE ===== -->
     <section id="architecture">
         <h2>2) Architecture & State</h2>
-        <p>The logic is separated from the UI (MVC-style), making the game easier to test and extend.</p>
-        <pre><code>GameState
- ├─ currentRoll: int (0..3)
- ├─ dice: List&lt;Die&gt; (5)
- ├─ scores: Map&lt;Category, int?&gt;
- ├─ availableCategories: Set&lt;Category&gt;
- └─ roll(), hold(index), score(category)
+        <p>
+            The Yatzy game follows a modular structure inspired by the MVC pattern.
+            Each class handles a distinct responsibility — the game state, dice logic, and scoring system —
+            making the app easier to extend and maintain.
+        </p>
 
-Die
- ├─ value: 1..6
- ├─ held: bool
- └─ toggleHold()
+        <div class="diagram">
+            GameState
+            │  currentRoll: int (0..3)
+            │  dice: List&lt;Die&gt; (5)
+            │  scores: Map&lt;Category, int?&gt;
+            │  availableCategories: Set&lt;Category&gt;
+            └─ roll(), hold(index), score(category)
 
-Category
- ├─ ONES..SIXES, THREE_OF_A_KIND, FOUR_OF_A_KIND, FULL_HOUSE
- ├─ SMALL_STRAIGHT, LARGE_STRAIGHT, CHANCE, YATZY
- └─ compute(dice: int[5]) → int
-</code></pre>
+            Die
+            │  value: 1..6
+            │  held: bool
+            └─ toggleHold()
+
+            Category
+            │  ONES..SIXES, THREE_OF_A_KIND, FOUR_OF_A_KIND, FULL_HOUSE
+            │  SMALL_STRAIGHT, LARGE_STRAIGHT, CHANCE, YATZY
+            └─ compute(dice: int[5]) → int
+        </div>
     </section>
 
     <!-- ===== ALGORITHMS ===== -->
     <section id="algorithms">
         <h2>3) Key Scoring Algorithms</h2>
-        <p>Language-agnostic snippets that mirror my assignment logic.</p>
+        <p>The following core algorithms reflect the game logic I implemented in my assignments:</p>
 
-        <pre><code>function tally(dice):
-  counts = {1:0,2:0,3:0,4:0,5:0,6:0}
-  for v in dice: counts[v] += 1
-  return counts
-</code></pre>
+        <div class="codebox">
+            function fullHouse(dice):
+            counts = sort(tally(dice).values())
+            return 25 if (3 in counts and 2 in counts) else 0
+        </div>
 
-        <pre><code>function fullHouse(dice):
-  counts = sort(tally(dice).values())
-  return 25 if (3 in counts and 2 in counts) else 0
-</code></pre>
+        <div class="codebox">
+            function smallStraight(dice):
+            s = set(dice)
+            return 30 if (
+            {1,2,3,4}.issubset(s) or {2,3,4,5}.issubset(s) or {3,4,5,6}.issubset(s)
+            ) else 0
+        </div>
 
-        <pre><code>function smallStraight(dice):
-  s = set(dice)
-  return 30 if (
-    {1,2,3,4}.issubset(s) or {2,3,4,5}.issubset(s) or {3,4,5,6}.issubset(s)
-  ) else 0
+        <div class="codebox">
+            function yatzy(dice):
+            return 50 if len(set(dice)) == 1 else 0
+        </div>
 
-function largeStraight(dice):
-  s = set(dice)
-  return 40 if (s == {1,2,3,4,5} or s == {2,3,4,5,6}) else 0
-</code></pre>
-
-        <pre><code>function ofAKindScore(dice, n):
-  counts = tally(dice)
-  return sum(dice) if any(counts[v] &gt;= n for v in counts) else 0
-
-function yatzy(dice):
-  return 50 if len(set(dice)) == 1 else 0
-
-function upperSection(dice, face):  # face ∈ {1..6}
-  return sum(v for v in dice if v == face)
-</code></pre>
+        <p style="font-size:.9rem;color:#666;margin-top:10px;">
+            These examples demonstrate scoring logic for three major categories (Full House, Straights, and Yatzy).
+            Each uses efficient state-based logic to compute player points.
+        </p>
     </section>
 
     <!-- ===== TECHNOLOGIES ===== -->
@@ -132,15 +138,12 @@ function upperSection(dice, face):  # face ∈ {1..6}
         <ul>
             <li><b>HTML/CSS:</b> Semantic structure, comments, responsive layout (Flexbox, media queries).</li>
             <li><b>JavaScript / Dart:</b> Dice roll, state updates, and scoring functions.</li>
-            <li><b>jQuery & Fetch API:</b> DOM updates and async data exchange (where applicable).</li>
-            <li><b>Node.js & Express:</b> Optional server endpoints for scores/storage.</li>
+            <li><b>jQuery &amp; Fetch API:</b> DOM updates and async data exchange (where applicable).</li>
+            <li><b>Node.js &amp; Express:</b> Optional server endpoints for scores/storage.</li>
             <li><b>MVC Concepts:</b> Separation of data, UI, and logic for maintainability.</li>
             <li><b>Accessibility (WCAG/ARIA):</b> Landmarks, alt text, and focus order for usability.</li>
             <li><b>GitHub:</b> Version control, readable commits, and project tracking.</li>
         </ul>
-        <p style="font-size:.95rem;color:#555">
-            *Design system reuse:* This page imports <code>../project1/styles.css</code> to stay consistent with Project 1.
-        </p>
     </section>
 
     <!-- ===== REFLECTION ===== -->
