@@ -103,8 +103,33 @@ function yatzy(dice):
 function upperSection(dice, face):  # face ∈ {1..6}
   return sum(v for v in dice if v == face)
 </code></pre>
-    </section>
-    </section>
+        <!-- ===== TECHNOLOGIES ===== -->
+        <section id="tech">
+            <h2>4) Technologies & Best Practices</h2>
+            <ul>
+                <li><b>HTML/CSS:</b> Semantic structure, comments, responsive layout (Flexbox, media queries).</li>
+                <li><b>JavaScript / Dart:</b> Dice roll, state updates, and scoring functions.</li>
+                <li><b>jQuery & Fetch API:</b> DOM updates and async data exchange (where applicable).</li>
+                <li><b>Node.js & Express:</b> Optional server endpoints for scores/storage.</li>
+                <li><b>MVC Concepts:</b> Separation of data, UI, and logic for maintainability.</li>
+                <li><b>Accessibility (WCAG/ARIA):</b> Landmarks, alt text, and focus order for usability.</li>
+                <li><b>GitHub:</b> Version control, readable commits, and project tracking.</li>
+            </ul>
+            <p style="font-size:.95rem;color:#555">
+                *Design system reuse:* This page imports <code>../project1/styles.css</code> to stay consistent with Project 1.
+            </p>
+        </section>
+
+        <!-- ===== REFLECTION ===== -->
+        <section id="reflection">
+            <h2>5) Reflection & Lessons Learned</h2>
+            <ul>
+                <li>Pure scoring functions made unit testing straightforward.</li>
+                <li>Separating logic from UI simplified adding features and debugging.</li>
+                <li>Accessibility and performance tweaks (alt text, smaller images) improved UX.</li>
+            </ul>
+            <p>Repository: <a href="https://github.com/M-Lucas12" target="_blank">github.com/M-Lucas12</a></p>
+        </section>
 </main>
 
 </body>
