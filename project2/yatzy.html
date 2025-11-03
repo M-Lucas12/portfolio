@@ -66,27 +66,44 @@
         </p>
     </section>
 
-    <!-- ===== ARCHITECTURE ===== -->
-    <section id="architecture">
-        <h2>2) Architecture & State</h2>
-        <p>The logic is separated from the UI (MVC-style), making the game easier to test and extend.</p>
-        <pre><code>GameState
- ├─ currentRoll: int (0..3)
- ├─ dice: List&lt;Die&gt; (5)
- ├─ scores: Map&lt;Category, int?&gt;
- ├─ availableCategories: Set&lt;Category&gt;
- └─ roll(), hold(index), score(category)
+    <!-- ===== ALGORITHMS ===== -->
+    <section id="algorithms">
+        <h2>3) Key Scoring Algorithms</h2>
+        <p>Language-agnostic snippets that mirror my assignment logic.</p>
 
-Die
- ├─ value: 1..6
- ├─ held: bool
- └─ toggleHold()
-
-Category
- ├─ ONES..SIXES, THREE_OF_A_KIND, FOUR_OF_A_KIND, FULL_HOUSE
- ├─ SMALL_STRAIGHT, LARGE_STRAIGHT, CHANCE, YATZY
- └─ compute(dice: int[5]) → int
+        <pre><code>function tally(dice):
+  counts = {1:0,2:0,3:0,4:0,5:0,6:0}
+  for v in dice: counts[v] += 1
+  return counts
 </code></pre>
+
+        <pre><code>function fullHouse(dice):
+  counts = sort(tally(dice).values())
+  return 25 if (3 in counts and 2 in counts) else 0
+</code></pre>
+
+        <pre><code>function smallStraight(dice):
+  s = set(dice)
+  return 30 if (
+    {1,2,3,4}.issubset(s) or {2,3,4,5}.issubset(s) or {3,4,5,6}.issubset(s)
+  ) else 0
+
+function largeStraight(dice):
+  s = set(dice)
+  return 40 if (s == {1,2,3,4,5} or s == {2,3,4,5,6}) else 0
+</code></pre>
+
+        <pre><code>function ofAKindScore(dice, n):
+  counts = tally(dice)
+  return sum(dice) if any(counts[v] &gt;= n for v in counts) else 0
+
+function yatzy(dice):
+  return 50 if len(set(dice)) == 1 else 0
+
+function upperSection(dice, face):  # face ∈ {1..6}
+  return sum(v for v in dice if v == face)
+</code></pre>
+    </section>
     </section>
 </main>
 
