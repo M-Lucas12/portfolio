@@ -4,8 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Project 2 – Yatzy Documentation | Lucas Muteta</title>
+
     <!-- Reuse Project 1 design system -->
     <link rel="stylesheet" href="../project1/styles.css" />
+
     <style>
         /* Small local tweaks only (kept minimal to satisfy “reuse design system”) */
         main { max-width: 1000px; margin: auto; padding: 40px 20px; }
@@ -18,6 +20,8 @@
             margin: 14px 0;
             border: 1px solid #ccc;
         }
+
+        pre, code { background:#eee; padding:10px; border-radius:6px; }
     </style>
 </head>
 <body>
@@ -44,9 +48,45 @@
 </nav>
 
 <main>
+    <!-- ===== SUMMARY ===== -->
     <section id="summary">
         <h2>1) Yatzy Game Summary</h2>
-        <p>Placeholder summary — content coming next.</p>
+        <p>
+            Yatzy is a dice game where players roll five dice up to three times per turn to achieve scoring
+            combinations such as Three/Four of a Kind, Full House, Small/Large Straight, Chance, and Yatzy (five of a kind).
+            My implementation focuses on clear state management, reusable UI components, and accurate scoring logic
+            aligned with the assignment requirements.
+        </p>
+
+        <!-- Replace this with your real screenshot later -->
+        <img class="screenshot" src="assets/yatzy_overview.png" alt="Yatzy overview screenshot" />
+
+        <p style="font-size:.95rem;color:#555">
+            *Add your real screenshot later as <code>project2/assets/yatzy_overview.png</code>*
+        </p>
+    </section>
+
+    <!-- ===== ARCHITECTURE ===== -->
+    <section id="architecture">
+        <h2>2) Architecture & State</h2>
+        <p>The logic is separated from the UI (MVC-style), making the game easier to test and extend.</p>
+        <pre><code>GameState
+ ├─ currentRoll: int (0..3)
+ ├─ dice: List&lt;Die&gt; (5)
+ ├─ scores: Map&lt;Category, int?&gt;
+ ├─ availableCategories: Set&lt;Category&gt;
+ └─ roll(), hold(index), score(category)
+
+Die
+ ├─ value: 1..6
+ ├─ held: bool
+ └─ toggleHold()
+
+Category
+ ├─ ONES..SIXES, THREE_OF_A_KIND, FOUR_OF_A_KIND, FULL_HOUSE
+ ├─ SMALL_STRAIGHT, LARGE_STRAIGHT, CHANCE, YATZY
+ └─ compute(dice: int[5]) → int
+</code></pre>
     </section>
 </main>
 
