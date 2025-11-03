@@ -21,7 +21,7 @@
             border: 1px solid #ccc;
         }
 
-        pre, code { background:#eee; padding:10px; border-radius:6px; }
+        pre, code { background: #eee; padding: 10px; border-radius: 6px; }
     </style>
 </head>
 <body>
@@ -58,12 +58,33 @@
             aligned with the assignment requirements.
         </p>
 
-        <!-- Replace this with your real screenshot later -->
+        <!-- Real screenshot of your game -->
         <img class="screenshot" src="assets/yatzy_overview.png" alt="Yatzy overview screenshot" />
 
-        <p style="font-size:.95rem;color:#555">
-            *Add your real screenshot later as <code>project2/assets/yatzy_overview.png</code>*
-        </p>
+
+    </section>
+
+    <!-- ===== ARCHITECTURE ===== -->
+    <section id="architecture">
+        <h2>2) Architecture & State</h2>
+        <p>The logic is separated from the UI (MVC-style), making the game easier to test and extend.</p>
+        <pre><code>GameState
+ ├─ currentRoll: int (0..3)
+ ├─ dice: List&lt;Die&gt; (5)
+ ├─ scores: Map&lt;Category, int?&gt;
+ ├─ availableCategories: Set&lt;Category&gt;
+ └─ roll(), hold(index), score(category)
+
+Die
+ ├─ value: 1..6
+ ├─ held: bool
+ └─ toggleHold()
+
+Category
+ ├─ ONES..SIXES, THREE_OF_A_KIND, FOUR_OF_A_KIND, FULL_HOUSE
+ ├─ SMALL_STRAIGHT, LARGE_STRAIGHT, CHANCE, YATZY
+ └─ compute(dice: int[5]) → int
+</code></pre>
     </section>
 
     <!-- ===== ALGORITHMS ===== -->
@@ -103,33 +124,35 @@ function yatzy(dice):
 function upperSection(dice, face):  # face ∈ {1..6}
   return sum(v for v in dice if v == face)
 </code></pre>
-        <!-- ===== TECHNOLOGIES ===== -->
-        <section id="tech">
-            <h2>4) Technologies & Best Practices</h2>
-            <ul>
-                <li><b>HTML/CSS:</b> Semantic structure, comments, responsive layout (Flexbox, media queries).</li>
-                <li><b>JavaScript / Dart:</b> Dice roll, state updates, and scoring functions.</li>
-                <li><b>jQuery & Fetch API:</b> DOM updates and async data exchange (where applicable).</li>
-                <li><b>Node.js & Express:</b> Optional server endpoints for scores/storage.</li>
-                <li><b>MVC Concepts:</b> Separation of data, UI, and logic for maintainability.</li>
-                <li><b>Accessibility (WCAG/ARIA):</b> Landmarks, alt text, and focus order for usability.</li>
-                <li><b>GitHub:</b> Version control, readable commits, and project tracking.</li>
-            </ul>
-            <p style="font-size:.95rem;color:#555">
-                *Design system reuse:* This page imports <code>../project1/styles.css</code> to stay consistent with Project 1.
-            </p>
-        </section>
+    </section>
 
-        <!-- ===== REFLECTION ===== -->
-        <section id="reflection">
-            <h2>5) Reflection & Lessons Learned</h2>
-            <ul>
-                <li>Pure scoring functions made unit testing straightforward.</li>
-                <li>Separating logic from UI simplified adding features and debugging.</li>
-                <li>Accessibility and performance tweaks (alt text, smaller images) improved UX.</li>
-            </ul>
-            <p>Repository: <a href="https://github.com/M-Lucas12" target="_blank">github.com/M-Lucas12</a></p>
-        </section>
+    <!-- ===== TECHNOLOGIES ===== -->
+    <section id="tech">
+        <h2>4) Technologies & Best Practices</h2>
+        <ul>
+            <li><b>HTML/CSS:</b> Semantic structure, comments, responsive layout (Flexbox, media queries).</li>
+            <li><b>JavaScript / Dart:</b> Dice roll, state updates, and scoring functions.</li>
+            <li><b>jQuery & Fetch API:</b> DOM updates and async data exchange (where applicable).</li>
+            <li><b>Node.js & Express:</b> Optional server endpoints for scores/storage.</li>
+            <li><b>MVC Concepts:</b> Separation of data, UI, and logic for maintainability.</li>
+            <li><b>Accessibility (WCAG/ARIA):</b> Landmarks, alt text, and focus order for usability.</li>
+            <li><b>GitHub:</b> Version control, readable commits, and project tracking.</li>
+        </ul>
+        <p style="font-size:.95rem;color:#555">
+            *Design system reuse:* This page imports <code>../project1/styles.css</code> to stay consistent with Project 1.
+        </p>
+    </section>
+
+    <!-- ===== REFLECTION ===== -->
+    <section id="reflection">
+        <h2>5) Reflection & Lessons Learned</h2>
+        <ul>
+            <li>Pure scoring functions made unit testing straightforward.</li>
+            <li>Separating logic from UI simplified adding features and debugging.</li>
+            <li>Accessibility and performance tweaks (alt text, smaller images) improved UX.</li>
+        </ul>
+        <p>Repository: <a href="https://github.com/M-Lucas12" target="_blank">github.com/M-Lucas12</a></p>
+    </section>
 </main>
 
 </body>
